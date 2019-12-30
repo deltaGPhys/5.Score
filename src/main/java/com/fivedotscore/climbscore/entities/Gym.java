@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Gym {
@@ -52,5 +53,29 @@ public class Gym {
 
     public void setComps(List<Competition> comps) {
         this.comps = comps;
+    }
+
+    @Override
+    public String toString() {
+        return "Gym{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", comps=" + comps +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Gym gym = (Gym) o;
+        return Objects.equals(id, gym.id) &&
+                Objects.equals(name, gym.name) &&
+                Objects.equals(comps, gym.comps);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, comps);
     }
 }

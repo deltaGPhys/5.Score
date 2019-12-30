@@ -45,7 +45,7 @@ public class CompService {
         } catch (Exception e) {
             logger.error(e.getStackTrace().toString());
         }
-        return gym;
+        return createdGym;
     }
 
     public Gym modifyGym(Gym gym) {
@@ -55,7 +55,7 @@ public class CompService {
         } catch (Exception e) {
             logger.error(e.getStackTrace().toString());
         }
-        return gym;
+        return modifiedGym;
     }
 
     public Iterable<Competition> findAllCompetitions() {
@@ -81,7 +81,7 @@ public class CompService {
         } catch (Exception e) {
             logger.error(e.getStackTrace().toString());
         }
-        return competition;
+        return createdCompetition;
     }
 
     public Competition modifyCompetition(Competition competition) {
@@ -91,6 +91,6 @@ public class CompService {
         } catch (Exception e) {
             logger.error(e.getStackTrace().toString());
         }
-        return competition;
+        return modifiedCompetition;
     }
 }

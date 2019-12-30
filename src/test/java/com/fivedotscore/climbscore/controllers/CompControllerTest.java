@@ -101,20 +101,20 @@ public class CompControllerTest {
 
     @Test
     public void getGymById() throws Exception {
-        when(gymRepository.findById(332L)).thenReturn(Optional.ofNullable(stubGyms().get(1)));
+        when(gymRepository.findById(334L)).thenReturn(Optional.ofNullable(stubGyms().get(1)));
 
         this.mvc.perform(MockMvcRequestBuilders
                 .get("/gyms/334"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(""));
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":334,\"name\":\"Gym B\",\"comps\":null}"));
         verify(gymRepository, times(1)).findById(334L);
     }
 
     @Test
     public void addGym() throws Exception {
-        Gym inputGym = stubGyms().get(0);
-        Gym outputGym = inputGym;
-        inputGym.setId(null);
+        Gym inputGym = new Gym(null,"Gym A",null);
+        Gym outputGym = new Gym(23L,"Gym A",null);
+
         ObjectMapper mapper = new ObjectMapper();
         String requestJson = mapper.writeValueAsString(inputGym);
         String responseJson = mapper.writeValueAsString(outputGym);
@@ -151,10 +151,10 @@ public class CompControllerTest {
     }
 
     private List<Competition> stubCompetitions() {
-        Competition competition1 = new Competition(23L,stubGyms().get(0), "Competition A",null);
-        Competition competition2 = new Competition(334L,stubGyms().get(1), "Competition B", null);
+        Competition competition1 = new Competition(123L,stubGyms().get(0), "Competition A",null);
+        Competition competition2 = new Competition(1334L,stubGyms().get(1), "Competition B", null);
 
-        return Arrays.asList(competition1,competition2);
+        return Arrays.asList(competition1, competition2);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class CompControllerTest {
         this.mvc.perform(MockMvcRequestBuilders
                 .get("/competitions/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":23,\"gymId\":23,\"name\":\"Competition A\",\"roundIds\":[]},{\"id\":334,\"gymId\":334,\"name\":\"Competition B\",\"roundIds\":[]}]"));
+                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":123,\"gymId\":23,\"name\":\"Competition A\",\"roundIds\":[]},{\"id\":1334,\"gymId\":334,\"name\":\"Competition B\",\"roundIds\":[]}]"));
 
         verify(competitionRepository, times(1)).findAll();
     }
@@ -182,34 +182,40 @@ public class CompControllerTest {
 
     @Test
     public void getCompetitionById() throws Exception {
-        when(competitionRepository.findById(334L)).thenReturn(Optional.ofNullable(stubCompetitions().get(1)));
+        when(competitionRepository.findById(1334L)).thenReturn(Optional.ofNullable(stubCompetitions().get(1)));
 
         this.mvc.perform(MockMvcRequestBuilders
-                .get("/competitions/334"))
+                .get("/competitions/1334"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("{\"id\":334,\"gymId\":334,\"name\":\"Competition B\",\"roundIds\":[]}"));
-        verify(competitionRepository, times(1)).findById(334L);
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1334,\"gymId\":334,\"name\":\"Competition B\",\"roundIds\":[]}"));
+        verify(competitionRepository, times(1)).findById(1334L);
     }
 
     @Test
     public void addCompetition() throws Exception {
-        Competition inputCompetition = stubCompetitions().get(0);
-        Competition outputCompetition = inputCompetition;
-
-        inputCompetition.setId(null);
+        Competition outputCompetition = new Competition(1334L,stubGyms().get(1), "Competition B", null);
         CompetitionDTO outputCompetitionDTO = new CompetitionDTO(outputCompetition);
+
+        Competition repoInputCompetition = new Competition(null,stubGyms().get(1), "Competition B", null);
+        when(competitionRepository.save(repoInputCompetition)).thenReturn(outputCompetition);
+
+        Competition inputCompetition = new Competition(null,null, "Competition B", null);
 
         ObjectMapper mapper = new ObjectMapper();
         String requestJson = mapper.writeValueAsString(inputCompetition);
         String responseJson = mapper.writeValueAsString(outputCompetitionDTO);
 
+        when(gymRepository.findById(334L)).thenReturn(Optional.ofNullable(stubGyms().get(1)));
+
         this.mvc.perform(MockMvcRequestBuilders
                 .post("/competitions")
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(requestJson))
+                .content(requestJson)
+                .param("gymId", "334"))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().string(responseJson));
         verify(competitionRepository, times(1)).save(any(Competition.class));
+        verify(gymRepository, times(1)).findById(334L);
     }
 
     @Test

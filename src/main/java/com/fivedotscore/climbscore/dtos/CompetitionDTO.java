@@ -62,4 +62,14 @@ public class CompetitionDTO {
     public void setRoundIds(List<Long> roundIds) {
         this.roundIds = roundIds;
     }
+
+    @Override
+    public String toString() {
+        return "CompetitionDTO{" +
+                "id=" + id +
+                ", gymId=" + gymId +
+                ", name='" + name + '\'' +
+                ", roundIds=" + roundIds +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package com.fivedotscore.climbscore.entities;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Competition {
@@ -62,5 +63,31 @@ public class Competition {
 
     public void setRounds(List<CompetitionRound> rounds) {
         this.rounds = rounds;
+    }
+
+    @Override
+    public String toString() {
+        return "Competition{" +
+                "id=" + id +
+                ", gym=" + gym +
+                ", name='" + name + '\'' +
+                ", rounds=" + rounds +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Competition that = (Competition) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(gym, that.gym) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(rounds, that.rounds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, gym, name, rounds);
     }
 }
