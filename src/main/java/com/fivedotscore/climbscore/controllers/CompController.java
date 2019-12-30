@@ -59,23 +59,18 @@ public class CompController {
     @GetMapping("/competitions/{id}")
     public ResponseEntity<CompetitionDTO> getCompetitionById(@PathVariable Long id) {
         Competition newCompetition = compService.findCompetitionById(id);
-        return new ResponseEntity((newCompetition != null)?new CompetitionDTO(newCompetition):null, HttpStatus.OK);
+        return new ResponseEntity((newCompetition != null) ? new CompetitionDTO(newCompetition) : null, HttpStatus.OK);
     }
 
     @PostMapping("/competitions")
     public ResponseEntity<CompetitionDTO> addNewCompetition(@RequestParam Long gymId, @RequestBody Competition competition) {
         competition.setGym(compService.findGymById(gymId));
-        System.out.println(gymId);
-        System.out.println(competition);
-        Competition newComp = compService.addNewCompetition(competition);
-        System.out.println(newComp);
-        return new ResponseEntity(new CompetitionDTO(newComp), HttpStatus.CREATED);
+        return new ResponseEntity(new CompetitionDTO(compService.addNewCompetition(competition)), HttpStatus.CREATED);
     }
 
     @PutMapping("/competitions/{id}")
     public ResponseEntity<CompetitionDTO> modifyCompetition(@PathVariable Long id, @RequestBody Competition competition) {
         return new ResponseEntity(new CompetitionDTO(compService.modifyCompetition(competition)), HttpStatus.OK);
     }
-
 
 }
