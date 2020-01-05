@@ -1,5 +1,12 @@
 package com.fivedotscore.climbscore.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fivedotscore.climbscore.serializers.CompetitionRoundDeserializer;
+import com.fivedotscore.climbscore.serializers.CompetitionRoundSerializer;
+import com.fivedotscore.climbscore.serializers.ZoneDeserializer;
+import com.fivedotscore.climbscore.serializers.ZoneSerializer;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +24,8 @@ public class Route {
     @ManyToOne
     private ScoringSystem system;
     @ManyToOne
+    @JsonSerialize(using = ZoneSerializer.class)
+    @JsonDeserialize(using = ZoneDeserializer.class)
     private Zone zone;
 
     public Long getId() {

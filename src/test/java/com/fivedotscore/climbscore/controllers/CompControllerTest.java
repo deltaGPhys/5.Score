@@ -2,10 +2,13 @@ package com.fivedotscore.climbscore.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivedotscore.climbscore.dtos.CompetitionDTO;
+import com.fivedotscore.climbscore.dtos.CompetitionRoundDTO;
 import com.fivedotscore.climbscore.entities.Competition;
+import com.fivedotscore.climbscore.entities.CompetitionRound;
 import com.fivedotscore.climbscore.entities.Gym;
 import com.fivedotscore.climbscore.exceptions.ObjectNotFoundException;
 import com.fivedotscore.climbscore.repositories.CompetitionRepository;
+import com.fivedotscore.climbscore.repositories.CompetitionRoundRepository;
 import com.fivedotscore.climbscore.repositories.GymRepository;
 import com.fivedotscore.climbscore.services.CompService;
 import org.hamcrest.Matchers;
@@ -30,6 +33,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -52,6 +56,9 @@ public class CompControllerTest {
 
     @MockBean
     CompetitionRepository competitionRepository;
+
+    @MockBean
+    CompetitionRoundRepository competitionRoundRepository;
 
     @Autowired
     CompService compService;
@@ -80,7 +87,7 @@ public class CompControllerTest {
 
     @Test
     public void getAllGyms() throws Exception {
-        when(compService.findAllGyms()).thenReturn(stubGyms());
+        when(gymRepository.findAll()).thenReturn(stubGyms());
 
         this.mvc.perform(MockMvcRequestBuilders
                 .get("/gyms/"))
@@ -239,5 +246,102 @@ public class CompControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(responseJson));
         verify(competitionRepository, times(1)).save(any(Competition.class));
+    }
+
+    private List<CompetitionRound> stubCompetitionRounds() {
+        CompetitionRound competitionRound1 = new CompetitionRound(91L,"Heart Burn Prelims", stubCompetitions().get(0), LocalDate.parse("2018-01-02"), null, null, null);
+        CompetitionRound competitionRound2 = new CompetitionRound(92L,"Heart Burn Finals", stubCompetitions().get(0), LocalDate.parse("2018-01-03"), null, null, null);
+        CompetitionRound competitionRound3 = new CompetitionRound(93L,"Winter Burn Prelims", stubCompetitions().get(1), LocalDate.parse("2018-01-04"), null, null, null);
+        CompetitionRound competitionRound4 = new CompetitionRound(94L,"Winter Burn Semis", stubCompetitions().get(1), LocalDate.parse("2018-01-05"), null, null, null);
+        CompetitionRound competitionRound5 = new CompetitionRound(95L,"Winter Burn Finals", stubCompetitions().get(1), LocalDate.parse("2018-01-06"), null, null, null);
+
+        return Arrays.asList(competitionRound1, competitionRound2, competitionRound3, competitionRound4, competitionRound5);
+    }
+
+    @Test
+    public void getAllCompetitionRounds() throws Exception {
+        when(compService.findAllCompetitionRounds()).thenReturn(stubCompetitionRounds());
+
+        this.mvc.perform(MockMvcRequestBuilders
+                .get("/competitionRounds/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":91,\"name\":\"Heart Burn Prelims\",\"competitionId\":123,\"date\":[2018,1,2],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]},{\"id\":92,\"name\":\"Heart Burn Finals\",\"competitionId\":123,\"date\":[2018,1,3],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]},{\"id\":93,\"name\":\"Winter Burn Prelims\",\"competitionId\":1334,\"date\":[2018,1,4],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]},{\"id\":94,\"name\":\"Winter Burn Semis\",\"competitionId\":1334,\"date\":[2018,1,5],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]},{\"id\":95,\"name\":\"Winter Burn Finals\",\"competitionId\":1334,\"date\":[2018,1,6],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]}]"));
+
+        verify(competitionRoundRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void getCompetitionRoundByIdNotFound() throws Exception {
+        when(competitionRoundRepository.findById(223123L)).thenReturn(Optional.ofNullable(null));
+
+        this.mvc.perform(MockMvcRequestBuilders
+                .get("/competitionRounds/223123"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(""));
+        verify(competitionRoundRepository, times(1)).findById(223123L);
+    }
+
+    @Test
+    public void getCompetitionRoundById() throws Exception {
+        when(competitionRoundRepository.findById(91L)).thenReturn(Optional.ofNullable(stubCompetitionRounds().get(1)));
+
+        this.mvc.perform(MockMvcRequestBuilders
+                .get("/competitionRounds/91"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":92,\"name\":\"Heart Burn Finals\",\"competitionId\":123,\"date\":[2018,1,3],\"zoneIds\":[],\"climberIds\":[],\"judgeIds\":[]}"));
+        verify(competitionRoundRepository, times(1)).findById(91L);
+    }
+
+    @Test
+    public void addCompetitionRound() throws Exception {
+        CompetitionRound outputCompetitionRound = new CompetitionRound(96L,"Midnight Burn Finals", stubCompetitions().get(1), LocalDate.parse("2018-01-06"), null, null, null);
+        CompetitionRoundDTO outputCompetitionRoundDTO = new CompetitionRoundDTO(outputCompetitionRound);
+
+        CompetitionRound repoInputCompetitionRound = new CompetitionRound(null,"Midnight Burn Finals", stubCompetitions().get(1), LocalDate.parse("2018-01-06"), null, null, null);
+        when(competitionRoundRepository.save(repoInputCompetitionRound)).thenReturn(outputCompetitionRound);
+
+        CompetitionRound inputCompetitionRound = new CompetitionRound(null,"Midnight Burn Finals", null, LocalDate.parse("2018-01-06"), null, null, null);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String requestJson = mapper.writeValueAsString(inputCompetitionRound);
+        String responseJson = mapper.writeValueAsString(outputCompetitionRoundDTO);
+
+        when(competitionRepository.findById(1334L)).thenReturn(Optional.ofNullable(stubCompetitions().get(1)));
+
+        this.mvc.perform(MockMvcRequestBuilders
+                .post("/competitionRounds")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson)
+                .param("compId", "1334"))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string(responseJson));
+        verify(competitionRoundRepository, times(1)).save(any(CompetitionRound.class));
+        verify(competitionRepository, times(1)).findById(1334L);
+    }
+
+    @Test
+    public void modifyCompetitionRound() throws Exception {
+        CompetitionRound inputCompetitionRound = stubCompetitionRounds().get(0);
+        CompetitionRound outputCompetitionRound = inputCompetitionRound;
+
+        outputCompetitionRound.setName("different");
+        CompetitionRoundDTO outputCompetitionRoundDTO = new CompetitionRoundDTO(outputCompetitionRound);
+        CompetitionRoundDTO inputCompetitionRoundDTO = new CompetitionRoundDTO(inputCompetitionRound);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String requestJson = mapper.writeValueAsString(inputCompetitionRoundDTO);
+        System.out.println(inputCompetitionRoundDTO);
+        String responseJson = mapper.writeValueAsString(outputCompetitionRoundDTO);
+
+        when(competitionRepository.findById(1334L)).thenReturn(Optional.ofNullable(stubCompetitions().get(1)));
+        when(competitionRoundRepository.save(inputCompetitionRound)).thenReturn(outputCompetitionRound);
+
+        this.mvc.perform(MockMvcRequestBuilders
+                .put("/competitionRounds/"+inputCompetitionRound.getId())
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(responseJson));
+        verify(competitionRoundRepository, times(1)).save(any(CompetitionRound.class));
     }
 }

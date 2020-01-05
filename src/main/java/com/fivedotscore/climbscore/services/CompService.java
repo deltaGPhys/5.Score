@@ -2,9 +2,11 @@ package com.fivedotscore.climbscore.services;
 
 import com.fivedotscore.climbscore.aspects.RetrievalAspect;
 import com.fivedotscore.climbscore.entities.Competition;
+import com.fivedotscore.climbscore.entities.CompetitionRound;
 import com.fivedotscore.climbscore.entities.Gym;
 import com.fivedotscore.climbscore.exceptions.ObjectNotFoundException;
 import com.fivedotscore.climbscore.repositories.CompetitionRepository;
+import com.fivedotscore.climbscore.repositories.CompetitionRoundRepository;
 import com.fivedotscore.climbscore.repositories.GymRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +22,12 @@ public class CompService {
     @Autowired
     CompetitionRepository competitionRepository;
 
+    @Autowired
+    CompetitionRoundRepository competitionRoundRepository;
+
     Logger logger = LoggerFactory.getLogger(RetrievalAspect.class);
 
     public Iterable<Gym> findAllGyms() {
-
         Iterable<Gym> result = gymRepository.findAll();
         return result;
     }
@@ -59,19 +63,18 @@ public class CompService {
     }
 
     public Iterable<Competition> findAllCompetitions() {
-
         Iterable<Competition> result = competitionRepository.findAll();
         return result;
     }
 
-    public Competition findCompetitionById(Long id) {
+    public Iterable<Competition> findAllCompetitionsForGym(Long id) {
+        Iterable<Competition> result = competitionRepository.findCompetitionsByGym_Id(id);
+        System.out.println(result);
+        return result;
+    }
 
-        try {
-            return competitionRepository.findById(id).orElseThrow(ObjectNotFoundException::new);
-        } catch (ObjectNotFoundException e) {
-            //logger.error("Error: object not found");
-        }
-        return null;
+    public Competition findCompetitionById(Long id) {
+        return competitionRepository.findById(id).orElse(null);
     }
 
     public Competition addNewCompetition(Competition competition) {
@@ -93,4 +96,44 @@ public class CompService {
         }
         return modifiedCompetition;
     }
+
+    public boolean verifyRound(Long roundId) {
+        return competitionRoundRepository.existsById(roundId);
+    }
+
+    public Iterable<CompetitionRound> findAllCompetitionRounds() {
+        Iterable<CompetitionRound> result = competitionRoundRepository.findAll();
+        return result;
+    }
+
+    public Iterable<CompetitionRound> findAllCompetitionRoundsForCompetition(Long id) {
+        Iterable<CompetitionRound> result = competitionRoundRepository.findCompetitionRoundsByCompetition_Id(id);
+        System.out.println(result);
+        return result;
+    }
+
+    public CompetitionRound findCompetitionRoundById(Long id) {
+        return competitionRoundRepository.findById(id).orElse(null);
+    }
+
+    public CompetitionRound addNewCompetitionRound(CompetitionRound competitionRound) {
+        CompetitionRound createdCompetitionRound = null;
+        try {
+            createdCompetitionRound = competitionRoundRepository.save(competitionRound);
+        } catch (Exception e) {
+            logger.error(e.getStackTrace().toString());
+        }
+        return createdCompetitionRound;
+    }
+
+    public CompetitionRound modifyCompetitionRound(CompetitionRound competitionRound) {
+        CompetitionRound modifiedCompetitionRound = null;
+        try {
+            modifiedCompetitionRound = competitionRoundRepository.save(competitionRound);
+        } catch (Exception e) {
+            logger.error(e.getStackTrace().toString());
+        }
+        return modifiedCompetitionRound;
+    }
+
 }

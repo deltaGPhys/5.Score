@@ -15,7 +15,7 @@ public class RetrievalAspect {
 
     Logger logger = LoggerFactory.getLogger(RetrievalAspect.class);
 
-    @AfterThrowing("execution(* com.fivedotscore.climbscore.repositories.*.*(..))")
+    @AfterThrowing("execution(* com.fivedotscore.climbscore.services.*.*(..))")
     public void logAfterThrowingAllMethods() throws Throwable {
         logger.info("Error caught: ");
     }

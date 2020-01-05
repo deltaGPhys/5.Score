@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RouteRepository extends CrudRepository<Route,Long> {
 
+    Iterable<Route> findRoutesByZone_Id(Long zoneId);
+
 }
 
