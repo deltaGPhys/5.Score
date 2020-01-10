@@ -1,9 +1,6 @@
 package com.fivedotscore.climbscore.controllers;
 
-import com.fivedotscore.climbscore.entities.Climber;
-import com.fivedotscore.climbscore.entities.Gym;
-import com.fivedotscore.climbscore.entities.Route;
-import com.fivedotscore.climbscore.entities.Zone;
+import com.fivedotscore.climbscore.entities.*;
 import com.fivedotscore.climbscore.repositories.RouteRepository;
 import com.fivedotscore.climbscore.repositories.ScoringSystemRepository;
 import com.fivedotscore.climbscore.repositories.ZoneRepository;
@@ -66,11 +63,28 @@ public class RoundController {
 
     @GetMapping("/climbers/round/{roundId}")
     public ResponseEntity<Iterable<Climber>> getAllClimbersForRound(@PathVariable Long roundId) {
-        return (roundService.verifyZone(roundId)) ? new ResponseEntity<>(roundService.findAllClimbersForRound(roundId), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return (roundService.verifyRound(roundId)) ? new ResponseEntity<>(roundService.findAllClimbersForRound(roundId), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/climbers/{id}")
     public ResponseEntity<Climber> getClimberById(@PathVariable Long id) {
         return new ResponseEntity<>(roundService.findClimberById(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/judges")
+    public ResponseEntity<Iterable<Judge>> getAllJudges() {
+        return new ResponseEntity<>(roundService.findAllJudges(), HttpStatus.OK);
+    }
+
+    @GetMapping("/judges/round/{roundId}")
+    public ResponseEntity<Iterable<Judge>> getAllJudgesForRound(@PathVariable Long roundId) {
+        return (roundService.verifyRound(roundId)) ? new ResponseEntity<>(roundService.findAllJudgesForRound(roundId), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @GetMapping("/judges/{id}")
+    public ResponseEntity<Judge> getJudgeById(@PathVariable Long id) {
+        return new ResponseEntity<>(roundService.findJudgeById(id), HttpStatus.OK);
     }
 }

@@ -1,5 +1,11 @@
 package com.fivedotscore.climbscore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fivedotscore.climbscore.serializers.ZoneDeserializer;
+import com.fivedotscore.climbscore.serializers.ZoneSerializer;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,9 +18,8 @@ public class Judge {
     private String name;
     private String password;
     @ManyToOne
-    private Competition comp;
-    @OneToMany
-    private List<Zone> zones;
+    @JsonIgnore
+    private CompetitionRound compRound;
 
     public Long getId() {
         return id;
@@ -40,19 +45,12 @@ public class Judge {
         this.password = password;
     }
 
-    public Competition getComp() {
-        return comp;
+    public CompetitionRound getCompRound() {
+        return compRound;
     }
 
-    public void setComp(Competition comp) {
-        this.comp = comp;
+    public void setCompRound(CompetitionRound comp) {
+        this.compRound = comp;
     }
 
-    public List<Zone> getZones() {
-        return zones;
-    }
-
-    public void setZones(List<Zone> zones) {
-        this.zones = zones;
-    }
 }

@@ -1,10 +1,7 @@
 package com.fivedotscore.climbscore.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fivedotscore.climbscore.serializers.CompetitionRoundDeserializer;
-import com.fivedotscore.climbscore.serializers.CompetitionRoundSerializer;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Email;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Climber {
@@ -24,14 +22,16 @@ public class Climber {
     @ManyToMany
     @JsonIgnore
     private List<CompetitionRound> compRounds;
-    private String code;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID code;
     @Email
     private String email;
 
     public Climber() {
     }
 
-    public Climber(String lastName, String firstName, List<CompetitionRound> compRounds, String code, @Email String email) {
+    public Climber(String lastName, String firstName, List<CompetitionRound> compRounds, @Email String email) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.compRounds = compRounds;
@@ -39,7 +39,7 @@ public class Climber {
         this.email = email;
     }
 
-    public Climber(Long id, String lastName, String firstName, List<CompetitionRound> compRounds, String code, @Email String email) {
+    public Climber(Long id, String lastName, String firstName, List<CompetitionRound> compRounds, @Email String email) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -80,11 +80,11 @@ public class Climber {
         this.compRounds = compRounds;
     }
 
-    public String getCode() {
+    public UUID getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(UUID code) {
         this.code = code;
     }
 

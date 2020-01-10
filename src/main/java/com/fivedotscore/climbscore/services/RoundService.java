@@ -2,12 +2,10 @@ package com.fivedotscore.climbscore.services;
 
 import com.fivedotscore.climbscore.aspects.RetrievalAspect;
 import com.fivedotscore.climbscore.entities.Climber;
+import com.fivedotscore.climbscore.entities.Judge;
 import com.fivedotscore.climbscore.entities.Route;
 import com.fivedotscore.climbscore.entities.Zone;
-import com.fivedotscore.climbscore.repositories.ClimberRepository;
-import com.fivedotscore.climbscore.repositories.CompetitionRoundRepository;
-import com.fivedotscore.climbscore.repositories.RouteRepository;
-import com.fivedotscore.climbscore.repositories.ZoneRepository;
+import com.fivedotscore.climbscore.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,13 @@ public class RoundService {
     ClimberRepository climberRepository;
 
     @Autowired
+    JudgeRepository judgeRepository;
+
+    @Autowired
     CompService compService;
+
+    @Autowired
+    RoundService roundService;
 
     public boolean verifyZone(Long zoneId) {
         return zoneRepository.existsById(zoneId);
@@ -77,4 +81,19 @@ public class RoundService {
     public Iterable<Climber> findAllClimbersForRound(Long roundId) {
         return climberRepository.findClimbersByCompRounds(compService.findCompetitionRoundById(roundId));
     }
+
+
+    public Iterable<Judge> findAllJudges() {
+        return judgeRepository.findAll();
+    }
+
+    public Judge findJudgeById(Long id) {
+        return judgeRepository.findById(id).orElse(null);
+    }
+
+    public Iterable<Judge> findAllJudgesForRound(Long roundId) {
+        Iterable<Judge> judges = judgeRepository.findJudgesByCompRound(compService.findCompetitionRoundById(roundId));
+        return judgeRepository.findJudgesByCompRound(compService.findCompetitionRoundById(roundId));
+    }
+
 }
