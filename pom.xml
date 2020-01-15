@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fivedotscore</groupId>
-	<artifactId>climbscore</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>climbscore</name>
+	<artifactId>FiveDotScore</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>FiveDotScore</name>
 	<description>Scoring API</description>
 
 	<properties>

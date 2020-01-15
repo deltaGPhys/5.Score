@@ -1,5 +1,6 @@
 package com.fivedotscore.climbscore.controllers;
 
+import com.fivedotscore.climbscore.dtos.CompetitionRoundDTO;
 import com.fivedotscore.climbscore.entities.*;
 import com.fivedotscore.climbscore.repositories.RouteRepository;
 import com.fivedotscore.climbscore.repositories.ScoringSystemRepository;
@@ -82,6 +83,10 @@ public class RoundController {
         return (roundService.verifyRound(roundId)) ? new ResponseEntity<>(roundService.findAllJudgesForRound(roundId), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/judges/single/{judgeId}")
+    public ResponseEntity<CompetitionRoundDTO> getRoundForJudge(@PathVariable Long judgeId) {
+        return (roundService.verifyJudge(judgeId)) ? new ResponseEntity<>(new CompetitionRoundDTO(roundService.findRoundForJudge(judgeId)), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
     @GetMapping("/judges/{id}")
     public ResponseEntity<Judge> getJudgeById(@PathVariable Long id) {

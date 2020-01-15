@@ -1,10 +1,7 @@
 package com.fivedotscore.climbscore.services;
 
 import com.fivedotscore.climbscore.aspects.RetrievalAspect;
-import com.fivedotscore.climbscore.entities.Climber;
-import com.fivedotscore.climbscore.entities.Judge;
-import com.fivedotscore.climbscore.entities.Route;
-import com.fivedotscore.climbscore.entities.Zone;
+import com.fivedotscore.climbscore.entities.*;
 import com.fivedotscore.climbscore.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +79,9 @@ public class RoundService {
         return climberRepository.findClimbersByCompRounds(compService.findCompetitionRoundById(roundId));
     }
 
+    public boolean verifyJudge(Long judgeId) {
+        return judgeRepository.existsById(judgeId);
+    }
 
     public Iterable<Judge> findAllJudges() {
         return judgeRepository.findAll();
@@ -96,4 +96,8 @@ public class RoundService {
         return judgeRepository.findJudgesByCompRound(compService.findCompetitionRoundById(roundId));
     }
 
+    public CompetitionRound findRoundForJudge(Long judgeId) {
+        Judge judge = findJudgeById(judgeId);
+        return judge.getCompRound();
+    }
 }

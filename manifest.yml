@@ -1,0 +1,7 @@
+---
+applications:
+  - name: fivedotscore
+    memory: 1G
+    instances: 1
+    buildpack: java_buildpack
+    path: target/FiveDotScore-1.0-SNAPSHOT.jar
