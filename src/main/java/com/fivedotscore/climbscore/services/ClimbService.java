@@ -29,19 +29,20 @@ public class ClimbService {
     @Autowired
     AttemptRepository attemptRepository;
 
+    @Autowired
+    RoundService roundService;
+
     public Iterable<Route> findAllRoutes() {
         Iterable<Route> result = routeRepository.findAll();
         return result;
     }
 
-    public Route findRouteByZone(Long zoneId) {
-        Route route = null;
-        try {
-            route = routeRepository.findById(zoneId).orElseThrow(ObjectNotFoundException::new);
-        } catch (ObjectNotFoundException e) {
-            logger.error("Error: object not found");
+    public Iterable<Route> findRoutesByZone(Long zoneId) {
+        if (roundService.verifyZone(zoneId)) {
+            return routeRepository.findRoutesByZone_Id(zoneId);
+        } else {
+            return null;
         }
-        return route;
     }
 
     public Route findRouteById(Long id) {
