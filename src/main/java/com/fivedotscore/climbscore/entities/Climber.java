@@ -3,10 +3,7 @@ package com.fivedotscore.climbscore.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +12,7 @@ import java.util.UUID;
 public class Climber {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String lastName;
     private String firstName;

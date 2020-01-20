@@ -15,7 +15,7 @@ import java.util.List;
 public class CompetitionRound {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToOne

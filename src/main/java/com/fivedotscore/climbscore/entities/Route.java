@@ -7,16 +7,13 @@ import com.fivedotscore.climbscore.serializers.CompetitionRoundSerializer;
 import com.fivedotscore.climbscore.serializers.ZoneDeserializer;
 import com.fivedotscore.climbscore.serializers.ZoneSerializer;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Route {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String identifier;
     private String name;

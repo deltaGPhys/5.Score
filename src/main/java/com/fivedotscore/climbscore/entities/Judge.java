@@ -1,21 +1,16 @@
 package com.fivedotscore.climbscore.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fivedotscore.climbscore.serializers.ZoneDeserializer;
-import com.fivedotscore.climbscore.serializers.ZoneSerializer;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Judge {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String username;
     private String password;
     @ManyToOne
     @JsonIgnore
@@ -29,12 +24,12 @@ public class Judge {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

@@ -92,7 +92,8 @@ public class CompControllerTest {
         this.mvc.perform(MockMvcRequestBuilders
                 .get("/gyms/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":23,\"name\":\"Gym A\",\"comps\":null},{\"id\":334,\"name\":\"Gym B\",\"comps\":null}]"));
+                .andExpect(MockMvcResultMatchers.content().string("[{\"id\":23,\"name\":\"Gym A\",\"comps\":null},{\"id\":334,\"name\":\"Gym B\",\"comps\":null}]"))
+                .andExpect(MockMvcResultMatchers.jsonPath(".").isNotEmpty());
 
         verify(gymRepository, times(1)).findAll();
     }

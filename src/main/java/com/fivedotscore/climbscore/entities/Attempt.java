@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Attempt {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Route route;

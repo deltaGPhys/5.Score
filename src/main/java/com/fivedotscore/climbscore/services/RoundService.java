@@ -66,6 +66,28 @@ public class RoundService {
         return routeRepository.findRoutesByZone_Id(zoneId);
     }
 
+    public Route modifyRoute(Route route) {
+        Route modifiedRoute = null;
+        try {
+            modifiedRoute = routeRepository.save(route);
+        } catch (Exception e) {
+            logger.error(e.getStackTrace().toString());
+        }
+        return modifiedRoute;
+    }
+
+    public Route addNewRoute(Route route) {
+        Route newRoute = null;
+
+        try {
+            newRoute = routeRepository.save(route);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getStackTrace().toString());
+        }
+        return newRoute;
+    }
+
 
     public Iterable<Climber> findAllClimbers() {
         return climberRepository.findAll();

@@ -102,16 +102,16 @@ insert into climber_comp_rounds (climber_id, comp_rounds_id) values (10, 2);
 insert into climber_comp_rounds (climber_id, comp_rounds_id) values (11, 2);
 insert into climber_comp_rounds (climber_id, comp_rounds_id) values (12, 2);
 
-insert into judge (id, name, password, comp_round_id) values (1, 'judgeJuliett', 'quis', 1);
-insert into judge (id, name, password, comp_round_id) values (2, 'judgeYankee', 'nullam', 1);
-insert into judge (id, name, password, comp_round_id) values (3, 'judgeTango', 'tristique', 1);
-insert into judge (id, name, password, comp_round_id) values (4, 'judgeZulu', 'id', 1);
-insert into judge (id, name, password, comp_round_id) values (5, 'judgeX-ray', 'justo', 1);
-insert into judge (id, name, password, comp_round_id) values (6, 'judgeTango', 'sagittis', 1);
-insert into judge (id, name, password, comp_round_id) values (7, 'judgeGolf', 'odio', 1);
-insert into judge (id, name, password, comp_round_id) values (8, 'judgeRomeo', 'porttitor', 1);
-insert into judge (id, name, password, comp_round_id) values (9, 'judgeMike', 'ac', 1);
-insert into judge (id, name, password, comp_round_id) values (10, 'judgeZulu', 'eget', 1);
+insert into judge (id, username, password, comp_round_id) values (1, 'judgeJuliett', 'quis', 1);
+insert into judge (id, username, password, comp_round_id) values (2, 'judgeYankee', 'nullam', 1);
+insert into judge (id, username, password, comp_round_id) values (3, 'judgeTango', 'tristique', 1);
+insert into judge (id, username, password, comp_round_id) values (4, 'judgeZulu', 'id', 1);
+insert into judge (id, username, password, comp_round_id) values (5, 'judgeX-ray', 'justo', 1);
+insert into judge (id, username, password, comp_round_id) values (6, 'judgeTango', 'sagittis', 1);
+insert into judge (id, username, password, comp_round_id) values (7, 'judgeGolf', 'odio', 1);
+insert into judge (id, username, password, comp_round_id) values (8, 'judgeRomeo', 'porttitor', 1);
+insert into judge (id, username, password, comp_round_id) values (9, 'judgeMike', 'ac', 1);
+insert into judge (id, username, password, comp_round_id) values (10, 'judgeZulu', 'eget', 1);
 
 insert into competition_round_judges (competition_round_id, judges_id) values (1,1);
 insert into competition_round_judges (competition_round_id, judges_id) values (1,2);

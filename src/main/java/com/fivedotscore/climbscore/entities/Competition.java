@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Competition {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Gym gym;
