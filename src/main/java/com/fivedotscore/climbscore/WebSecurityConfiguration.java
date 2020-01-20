@@ -1,5 +1,6 @@
 package com.fivedotscore.climbscore;
 
+import com.fivedotscore.climbscore.authentication.JWTAuthenticationFilter;
 import com.fivedotscore.climbscore.authentication.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -31,6 +33,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 
     @Autowired
     UserDetailsService userDetailsService;
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -70,6 +77,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .permitAll()
                 .anyRequest()
                 .authenticated();
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 //                .and().httpBasic()
 //                .and().headers().frameOptions().disable()

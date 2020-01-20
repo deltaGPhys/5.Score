@@ -1,5 +1,6 @@
 package com.fivedotscore.climbscore.controllers;
 
+import com.fivedotscore.climbscore.authentication.AuthService;
 import com.fivedotscore.climbscore.dtos.CompetitionRoundDTO;
 import com.fivedotscore.climbscore.entities.*;
 import com.fivedotscore.climbscore.repositories.RouteRepository;
@@ -22,6 +23,9 @@ public class RoundController {
 
     @Autowired
     CompService compService;
+
+    @Autowired
+    AuthService authService;
 
     @GetMapping("/zones")
     public ResponseEntity<Iterable<Zone>> getAllZones() {
@@ -51,6 +55,7 @@ public class RoundController {
 
     @GetMapping("/routes/{id}")
     public ResponseEntity<Route> getRouteById(@PathVariable Long id) {
+        authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("Not logged in"));
         return new ResponseEntity<>(roundService.findRouteById(id), HttpStatus.OK);
     }
 

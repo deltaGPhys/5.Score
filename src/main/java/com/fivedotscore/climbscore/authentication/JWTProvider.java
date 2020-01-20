@@ -1,5 +1,6 @@
 package com.fivedotscore.climbscore.authentication;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -11,13 +12,13 @@ import javax.annotation.PostConstruct;
 import java.security.Key;
 
 @Service
-public class JWTTokenProvider {
+public class JWTProvider {
 
     private Key key;
 
     @PostConstruct
     public void init() {
-        key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     }
 
@@ -25,8 +26,21 @@ public class JWTTokenProvider {
         User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
-                .signWith(SignatureAlgorithm.HS512,key)
+                .signWith(SignatureAlgorithm.HS512,this.key)
                 .compact();
+    }
 
+    public boolean validateToken(String jwt) {
+        Jwts.parser().setSigningKey(this.key).parseClaimsJws(jwt);
+        return true;
+    }
+
+    public String getUsernameFromJwt(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(this.key)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
     }
 }

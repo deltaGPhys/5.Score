@@ -1,8 +1,6 @@
 package com.fivedotscore.climbscore.authentication;
 
-import com.fivedotscore.climbscore.entities.Judge;
 import com.fivedotscore.climbscore.entities.User;
-import com.fivedotscore.climbscore.repositories.JudgeRepository;
 import com.fivedotscore.climbscore.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -25,7 +25,7 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JWTTokenProvider jwtTokenProvider;
+    private JWTProvider jwtProvider;
 
     public User signup(RegistrationRequest registrationRequest) {
         User user = new User();
@@ -39,6 +39,11 @@ public class AuthService {
     public String login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return jwtTokenProvider.generateToken(authenticate);
+        return jwtProvider.generateToken(authenticate);
+    }
+
+    public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Optional.of(user);
     }
 }
