@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin(origins="http://localhost:8080")
+@CrossOrigin(origins="http://localhost:4200")
 public class RoundController {
 
     @Autowired
@@ -55,7 +55,6 @@ public class RoundController {
 
     @GetMapping("/routes/{id}")
     public ResponseEntity<Route> getRouteById(@PathVariable Long id) {
-        authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("Not logged in"));
         return new ResponseEntity<>(roundService.findRouteById(id), HttpStatus.OK);
     }
 

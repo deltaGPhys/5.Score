@@ -43,7 +43,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET, POST, PUT, DELETE")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "Authorization")
                 .allowCredentials(false)
                 .maxAge(32400);  // 9 hours max age
@@ -76,19 +76,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .antMatchers("/api/auth/**")
                 .permitAll()
                 .anyRequest()
-                .authenticated();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticated()
+                .and().httpBasic()
+                .and().headers().frameOptions().disable()
+                .and().csrf().disable()
+                .headers()
+                // the headers you want here. This solved all my CORS problems!
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "GET", "DELETE", "PUT", "POST", "OPTIONS"))
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"));
 
-//                .and().httpBasic()
-//                .and().headers().frameOptions().disable()
-//                .and()
-//                .headers()
-//                // the headers you want here. This solved all my CORS problems!
-//                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
-//                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "GET, DELETE, PUT, POST"))
-//                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
-//                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-//                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"));
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Autowired

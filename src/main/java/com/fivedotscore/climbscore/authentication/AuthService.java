@@ -46,4 +46,10 @@ public class AuthService {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Optional.of(user);
     }
+
+    public Optional<String> getCurrentUsername() {
+        Authentication var = SecurityContextHolder.getContext().getAuthentication();
+        org.springframework.security.core.userdetails.User user = getCurrentUser().get();
+        return Optional.of(user.getUsername());
+    }
 }
