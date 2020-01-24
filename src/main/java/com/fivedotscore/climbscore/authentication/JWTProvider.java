@@ -14,11 +14,11 @@ import java.security.Key;
 @Service
 public class JWTProvider {
 
-    private Key key;
+    private String key;
 
     @PostConstruct
     public void init() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        this.key = System.getenv("JWT_SECRET");
 
     }
 

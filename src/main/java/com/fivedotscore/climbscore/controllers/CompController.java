@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Controller
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="*", allowedHeaders = "Authorization")
 public class CompController {
 
     @Autowired
