@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@localhost" uuid="68bbe8e4-cc17-4c90-82c8-c5d26d7ea328">
+    <data-source source="LOCAL" name="MySQL - @localhost" uuid="c3ee377c-18e6-49e0-b213-9cf97bb45fd4">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="CONVERT_TO_NULL" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="ad_ece3b0e231f9d64@us-cdbr-iron-east-05.cleardb.net" uuid="8457dc39-b14e-4cc3-b607-d28d50f16906">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://us-cdbr-iron-east-05.cleardb.net/ad_ece3b0e231f9d64?user=b95c74a5b3c51b&amp;password=6e214a2b</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="CONVERT_TO_NULL" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
     </data-source>
   </component>
 </project>
